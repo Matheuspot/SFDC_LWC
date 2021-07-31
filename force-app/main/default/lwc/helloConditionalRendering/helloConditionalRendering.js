@@ -16,3 +16,6 @@ export default class HelloConditionalRendering extends LightningElement {
         return this.name === 'Hello'
     }
 }
+
+// falsy valeus in JS
+// x = 0, false, undefined, null, ''
