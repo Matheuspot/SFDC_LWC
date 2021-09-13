@@ -1,0 +1,11 @@
+.html {
+    width: 100%;
+    background-color: #2196f3;
+}
+
+.skills {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+}
