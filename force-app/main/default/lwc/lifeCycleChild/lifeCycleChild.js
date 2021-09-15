@@ -5,10 +5,10 @@ export default class LifeCycleChild extends LightningElement {
         super()
         console.log('Child constructor called')    
     }
-    interval
+    
     connectedCallback() {
         console.log('Child connectedCallack called')
-        this.interval =  window.setInterval()
+        throw new Error('Loading of child component failed')
     }
     renderedCallback() {
         console.log('Child renderedCallback called')
@@ -16,7 +16,6 @@ export default class LifeCycleChild extends LightningElement {
     
     disconnectedCallback() {
         alert('Child disconnectedCallback called !!')
-        window.removeEventListener('click', this.handleClick)
-        window.clearInterval(this.interval)
+     
     }
 }
