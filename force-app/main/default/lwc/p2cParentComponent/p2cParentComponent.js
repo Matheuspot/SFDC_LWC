@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class P2cParentComponent extends LightningElement {
+    percentage    
     carouselData = [
         {
             src: "https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg",
@@ -18,4 +19,12 @@ export default class P2cParentComponent extends LightningElement {
             description: "Third card description."
         }
     ]
+
+    changeHandler(event) {
+        this.percentage = event.target.value
+    }
+
+    get fieldValue() {
+        return `"${this.percentage}"`;
+    }
 }
