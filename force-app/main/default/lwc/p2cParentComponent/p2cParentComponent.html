@@ -22,5 +22,13 @@
                     progress-value = {percentage}>
                 </c-p2c-progress-component>
             </div>
-        </lightning-card>                   
+        </lightning-card>    
+
+    <!--Example of calling child method from parent--> 
+    <lightning-button 
+        variant="brand" 
+        label="Reset Slider"
+        onclick={handleClick}>
+     </lightning-button> 
+    <c-p2c-slider-component></c-p2c-slider-component>  
 </template>
