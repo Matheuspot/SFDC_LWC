@@ -30,6 +30,5 @@ export default class P2cParentComponent extends LightningElement {
 
     get fieldValue() {
         return `"${this.percentage}"`;
-    }
-    
+    }    
 }
