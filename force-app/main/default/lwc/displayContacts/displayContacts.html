@@ -1,0 +1,29 @@
+<template>
+    <template if:false = {isOpen}>
+        <lightning-button label = "Show contact list" variant = "brand" onclick = {handleClick}/>
+        </lightning-button>
+    </template>
+        <template if:true = {isOpen}>
+        <lightning-button label = "Close contact list" variant = "destructive" onclick = {handleClick}/>
+        </lightning-button>
+    </template>
+    <template if:true = {eventSource}>
+        <template if:true = {records}>
+            <table class = "slds-table slds-table_cell-buffer slds-table_bordered">
+                <tr>
+                    <td><b>Contact</b></td>
+                </tr>
+                <template for:each = {records} for:item = "contact">
+                    <tr key = {contact.Id}>
+                        <td>
+                            {contact.FirstName} {contact.LastName}
+                        </td>
+                    </tr>
+                </template>
+            </table>
+        </template>
+        <template if:true = {error}>
+            Error in fetching  the data
+        </template>
+    </template>
+</template>

@@ -1,0 +1,16 @@
+h1 {
+    font-size: 30px;
+    color:red;
+}
+
+/*Styling child component
+c-css-child-demo {
+    display: block;
+    background-color: green;
+    color: white;
+}*/
+
+p {
+    font-size: 20px;
+    color: yellow;
+}

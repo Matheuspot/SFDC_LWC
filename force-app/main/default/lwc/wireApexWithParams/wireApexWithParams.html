@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title = 'Apex Wire Demo with Params'>
+        <div class = "slds-var-p-around_medium">
+            <template if:true = {accountTypeValues.data}>
+                <lightning-combobox
+                    name     = "type"
+                    label    = "Choose your Type"
+                    value    = {selectedType}
+                    options  = {accountTypeValues.data.values}
+                    onchange = {handleChange}            
+                ></lightning-combobox>
+            </template>           
+            <template if:true = {filteredAccounts.data}>
+                <template for:each = {filteredAccounts.data} for:item = "account">
+                    <div class = "slds-box slds-box_xx-small" key = {account.Id}>
+                        <p><strong>Name:</strong> {account.Name}</p>
+                        <p><strong>Type:</strong> {account.Type}</p>
+                    </div>
+                </template>
+            </template>        
+        </div>
+    </lightning-card> 
+</template>
