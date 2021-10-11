@@ -1,12 +1,12 @@
 <template>
-    <lightning-card title = "Lista de Arquivos" variant="Narrow" icon-name="standard:document">
+    <lightning-card title = "Último upload" variant="Narrow" icon-name="standard:document">
         <template for:each = {filesList} for:item = "file" for:index = "index">
-            <div key = {file.value} class = "slds-box">
-                <div class="slds-box slds-wrap">     
+            <div key = {file.value} class = "slds-box slds-box_small slds-m-around_x-large">
+                    
                     <div class="slds-grid">
                         <div class="slds-col slds-large-size_8-of-12 slds-medium-size_12-of-12 slds-size_12-of-12">
                             <div>                       
-                                <p><strong>Nome do Arquivo</strong></p>
+                                <p><strong>Nome do arquivo</strong></p>
                                 <p>{file.label}</p>
                             </div>    
                         </div>
@@ -16,7 +16,7 @@
                             </div>  
                         </div>
                     </div>                                
-                </div>   
+                  
             </div>
         </template>
     </lightning-card>    
