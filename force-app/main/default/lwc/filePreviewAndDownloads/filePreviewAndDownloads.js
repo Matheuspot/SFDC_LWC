@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 import getRelatedFilesByRecordId from '@salesforce/apex/filePreviewAndDownloadController.getRelatedFilesByRecordId';
 import { NavigationMixin} from 'lightning/navigation'
 
@@ -30,4 +30,21 @@ export default class FilePreviewAndDownloads extends NavigationMixin(LightningEl
             }
         })
     }
+
+    previewHandler(event){
+        console.log(event.target.dataset.id)
+        this[NavigationMixin.Navigate]({ 
+            type:'standard__namedPage',
+            attributes:{ 
+                pageName:'filePreview'
+            },
+            state:{ 
+                selectedRecordId: event.target.dataset.id
+            }
+        })
+    }
+
+    get isUploaded() {
+        return this.filesList.length >= 1
+    }  
 }
