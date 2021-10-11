@@ -11,9 +11,13 @@
     <label>Zero to Hero in LWC</label>
     <navType>Standard</navType>
     <tabs>LWC_Fundamentals</tabs>
+    <tabs>My_Projects</tabs>
     <tabs>Lifecycle_Hooks</tabs>
     <tabs>Styling_in_LWC</tabs>
     <tabs>Components_Communication</tabs>
+    <tabs>APEX_in_LWC</tabs>
+    <tabs>Wire_Service</tabs>
+    <tabs>CRUD_uiRecordAPI</tabs>
     <tabs>Quiz_App</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Zero_to_Hero_in_LWC_UtilityBar</utilityBar>

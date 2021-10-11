@@ -1,21 +1,21 @@
 <template>
-    <lightning-card title = "File Preview and Download">
-        <template for:each = {filesList} for:item = "file">
+    <lightning-card title = "Lista de Arquivos" variant="Narrow" icon-name="standard:document">
+        <template for:each = {filesList} for:item = "file" for:index = "index">
             <div key = {file.value} class = "slds-box">
-                <div class="slds-grid slds-wrap">
-                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
-                        <p><strong>Filename - </strong> {file.label}</p>
-                    </div>
-                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
-                        <a href = {file.url} >Download</a>
-                    </div>
-                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
-                        <lightning-button label = "Preview" 
-                            variant = "brand" 
-                            data-id = {file.value}
-                            onclick = {previewHandler}
-                            ></lightning-button>
-                    </div>
+                <div class="slds-box slds-wrap">     
+                    <div class="slds-grid">
+                        <div class="slds-col slds-large-size_8-of-12 slds-medium-size_12-of-12 slds-size_12-of-12">
+                            <div>                       
+                                <p><strong>Nome do Arquivo</strong></p>
+                                <p>{file.label}</p>
+                            </div>    
+                        </div>
+                        <div class="slds-col slds-large-size_8-of-12 slds-medium-size_12-of-12 slds-size_12-of-12">
+                             <div class="slds-m-around_xx-small slds-p-top_x-small">
+                                <lightning-button label = "Download" variant="brand" onclick = {downloadHandler} value = {index} ></lightning-button>                       
+                            </div>  
+                        </div>
+                    </div>                                
                 </div>   
             </div>
         </template>
