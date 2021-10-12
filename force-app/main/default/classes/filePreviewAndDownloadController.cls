@@ -1,7 +1,7 @@
 public with sharing class filePreviewAndDownloadController {
    
     @AuraEnabled(cacheable = true)
-    public static Map<Id, String> getRelatedFilesByRecordId(String recordId) {
+    public static String getRelatedFilesByRecordId(String recordId) {
         
         List<ContentDocumentLink> lsFiles = [
                                             SELECT ContentDocumentId 
@@ -16,17 +16,16 @@ public with sharing class filePreviewAndDownloadController {
         }
  
         List<ContentVersion> lsDocs = [
-                                        SELECT CreatedDate, ContentDocumentId, FileExtension, Title 
+                                        SELECT Id,
+                                        CreatedDate, 
+                                        CreatedBy.Name, 
+                                        ContentDocumentId, 
+                                        FileExtension, 
+                                        Title 
                                         FROM ContentVersion 
                                         WHERE ContentDocumentId IN : setfileIDs
                                         ORDER BY CreatedDate DESC LIMIT 1
-                                    ];
-
-
-        Map<Id, String> mapIdTitle = new Map<Id, String>();
-        for (ContentVersion docLink : lsDocs) {
-            mapIdTitle.put(docLink.ContentDocumentId, docLink.Title);
-        }
-        return mapIdTitle;
+                                    ];  
+        return JSON.serialize(lsDocs);
     }
 }

@@ -8,17 +8,28 @@ export default class FilePreviewAndDownloads extends NavigationMixin(LightningEl
 
     @wire(getRelatedFilesByRecordId, {recordId : '$recordId'}) 
     wiredResult ({data, error}){
-        if (data) {
-            console.log(data)
-            this.filesList = Object.keys(data).map(item => ({
-                "label" : data[item], 
-                "value" : item,
-                "url"   : `/sfc/servlet.shepherd/document/download/${item}`
-            }))        
+        if (data) {           
+            let payload = JSON.parse(data)   
+            this.filesList = Object.values(payload).map(item => ({
+                "Title"         : item.Title,
+                "DocId"         : item.ContentDocumentId,
+                "CreatedBy"     : item.CreatedBy.Name,
+                "CreatedDate"   : this.formatDate(item),
+                "url"           : `/sfc/servlet.shepherd/document/download/${item.ContentDocumentId}`              
+            }))
         }
         if (error) {
             console.log(error)
         }
+    }
+
+    formatDate(item) {
+        let dateRaw = item.CreatedDate
+        let day     = dateRaw.substring(8,10)
+        let month   = dateRaw.substring(5,7)
+        let year    = dateRaw.substring(0,4)
+        let time    = dateRaw.substring(11,19)
+        return day + '/' + month + '/' + year + ' ' + time
     }
 
     downloadHandler(event) {        
@@ -48,3 +59,7 @@ export default class FilePreviewAndDownloads extends NavigationMixin(LightningEl
         return this.filesList.length >= 1
     }  
 }
+
+
+
+

@@ -2,12 +2,14 @@
     <template if:true = {isUploaded}>
         <lightning-card title = "Último upload" variant="Narrow" icon-name="standard:document">        
             <template for:each = {filesList} for:item = "file" for:index = "index">
-                <div key = {file.value} class = "slds-box slds-box_small slds-m-around_x-large">                    
+                <div key = {file.DocId} class = "slds-box slds-box_small slds-m-around_x-large">                    
                     <div class="slds-grid">
                         <div class="slds-col slds-large-size_8-of-12 slds-medium-size_12-of-12 slds-size_12-of-12">
                             <div>                       
                                 <p><strong>Nome do arquivo</strong></p>
-                                <p>{file.label}</p>
+                                <p>{file.Title}</p>                                
+                                <p class = "slds-p-top_x-small"><strong>Data de upload</strong></p>
+                                <p>{file.CreatedDate}</p>
                             </div>    
                         </div>
                         <div class="slds-col slds-large-size_8-of-12 slds-medium-size_12-of-12 slds-size_12-of-12">
@@ -15,7 +17,7 @@
                                 <lightning-button label = "Download" variant="brand" onclick = {downloadHandler} value = {index} ></lightning-button>                                             
                             </div>  
                             <div class="slds-m-around_xx-small slds-p-top_x-small slds-p-left_xx-small">                                
-                                <lightning-button label="Preview" variant="brand" data-id={file.value} onclick={previewHandler}></lightning-button>
+                                <lightning-button label="Preview" variant="brand" data-id={file.DocId} onclick={previewHandler}></lightning-button>
                             </div> 
                         </div>
                     </div>                                      
