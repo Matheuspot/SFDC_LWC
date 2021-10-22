@@ -16,7 +16,7 @@ export default class HelloQuerySelectorDemo extends LightningElement {
         })
 
         /// lwc:manual demo
-        const childElem = this.template.querySelector('.child')
+        const childElem = this.template.querySelector('.child')       
         childElem.innerHTML = '<p style = "color:red">Hey I am a child element</p>'
     }
 }

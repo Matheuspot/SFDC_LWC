@@ -1,0 +1,50 @@
+<aura:component controller = "ViaCEPCallout" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name = "recordId" type = "String"/>
+    <aura:attribute name = "CEP" type = "String"/>
+    <aura:attribute name = "cepReturn" type = "Object"/>
+    <aura:handler   name = "init" value = "{!this}" action = "{!c.doInit}"/>
+
+    <aura:html tag = "style">
+        .buttonIcon.slds-p-around_small.slds-size_6-of-12{
+            margin-top: 25px ! important;
+        }
+    </aura:html>
+
+    <header class="slds-modal__header">
+        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Search for Address</h2>
+    </header>
+      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <lightning:layout  multipleRows = "true" >
+            <!-- Line 1-->
+            <lightning:layoutItem padding="around-small" size = "6">       
+                <lightning:input name="cep" label="CEP" value = "{!v.CEP}" />         
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size = "6" class = "buttonIcon"> 
+                <lightning:buttonIcon iconName="utility:search" variant="bare" alternativeText="Search" onclick = "{!c.searchCEP}" />
+            </lightning:layoutItem>
+
+              <!-- Line 2 -->
+            <lightning:layoutItem padding="around-small" size = "6">  
+                <lightning:input name="street" label="Street" value = "{!v.cepReturn.logradouro}" />              
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size = "6"> 
+                <lightning:input name="district" label="District" value = "{!v.cepReturn.bairro}" />  
+            </lightning:layoutItem>
+
+              <!-- Line 3 -->
+            <lightning:layoutItem padding="around-small" size = "6">   
+                <lightning:input name="city" label="City" value = "{!v.cepReturn.localidade}"/>                 
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size = "6"> 
+                <lightning:input name="state" label="State" value = "{!v.cepReturn.uf}" />  
+            </lightning:layoutItem>
+
+        </lightning:layout>
+        
+      </div>
+    <footer class="slds-modal__footer">
+        <button class="slds-button slds-button_neutral" onclick = "{!c.cancel}" >Cancel</button>
+        <button class="slds-button slds-button_brand" onclick = "{!c.save}">Save</button>
+    </footer> 
+
+</aura:component>

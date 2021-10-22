@@ -1,0 +1,26 @@
+<aura:component controller = "ViaCEPCallout" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name = "recordId" type = "String"/>   
+    <aura:handler   name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    
+    <aura:html tag = "style">
+        .buttonIcon.slds-p-around_small.slds-size_6-of-12{
+        margin-top: 25px ! important;
+        }
+    </aura:html>
+    
+    <header class="slds-modal__header">
+        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Consulta ao SERASA</h2>
+    </header>
+    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <lightning:layout  multipleRows = "true" >           
+            <lightning:layoutItem padding="around-small" size = "6" class = "buttonIcon"> 
+                <lightning:buttonIcon iconName="utility:search" variant="bare" alternativeText="Search" onclick = "{!c.searchCEP}" />
+            </lightning:layoutItem>   
+        </lightning:layout>
+        
+    </div>
+    <footer class="slds-modal__footer">
+        <button class="slds-button slds-button_neutral" onclick = "{!c.cancel}" >Cancelar</button>      
+    </footer> 
+    
+</aura:component>

@@ -1,0 +1,59 @@
+<template>
+ <header class="slds-modal__header">
+        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Pagination</h2>
+    </header>
+      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <lightning-layout>
+                <!-- Line 1-->
+            <!--
+            <lightning-layout-item padding="around-small" size = "6">       
+                <lightning-input type="String" name="Field 1" label="Field 1" ></lightning-input>     
+            </lightning-layout-item>-->
+
+            <div class = "test">
+                <template if:true={paginatedItems}>
+                    <template for:each={paginatedItems} for:item="acc">
+                        <p key={acc}>{acc}</p>
+                    </template>
+                </template>
+            </div>
+
+            <div class = "test2">   
+            </div>
+        </lightning-layout>        
+      </div>
+    <footer class="slds-modal__footer">
+         <lightning-layout-item size="4">
+            <lightning-button 
+                label="First" 
+                variant="destructive-text"
+                value = 1
+                icon-name = "utility:chevroleft"                                    
+                onclick = {controller.goTo}
+                disabled = {isFirstPage}/>
+            </lightning-button>
+            <lightning-button 
+                label="Previous" 
+                variant="brand-outline"
+                icon-name = "utility:chevroleft"                                    
+                onclick = {controller.prev}
+                disabled = {isFirstPage}/>
+            </lightning-button>
+            <lightning-button 
+                label="Next" 
+                variant="brand-outline"
+                icon-name = "utility:chevroleft"                                    
+                onclick = {controller.next}
+                disabled = {isLastPage}/>
+            </lightning-button>
+            <lightning-button 
+                label="Last" 
+                variant="destructive-text"
+                value = {totalPage}
+                icon-name = "utility:chevroleft"                                    
+                onclick = {controller.goTo}
+                disabled = {isLastPage}/>
+            </lightning-button>   
+        </lightning-layout-item>   
+    </footer>  
+</template>
