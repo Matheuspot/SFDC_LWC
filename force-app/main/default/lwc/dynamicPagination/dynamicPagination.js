@@ -1,42 +1,26 @@
 import { LightningElement, track, wire } from 'lwc';
 
 export default class DynamicPagination extends LightningElement {   
-    data = Array.from({length: 100}).map((_, item) => `<p>This sample ${item + 1} is populated by this field:</p> {0}.`) 
-    formatedData   
-    auxRaw = this.data.map((item, index)=> {
-        this.formatedData = item.replace('{0}', '<lightning-input type="String" name="Field 1" label="Field 1" ></lightning-input>')       
-    })
-   
-    
-    //data = Array.from({length: 100}).map((_, item) => `This sample is populate by this field: {}. Thank you! ${item + 1}`)  
+    @track dataRaw = Array.from({length: 100}).map((_, item) => `${item + 1}. This sample is populated by this field {0} which is used to display dates 1 {1} {2}`) 
+    @track data = this.convertToView(this.dataRaw)
+
     paginatedItems = 0
-    @track perPage = 1      
+    @track perPage = 1 
+
     @track state = { page: 1, numberOfButtons: 5} 
-    totalPage = Math.ceil(this.data.length / this.perPage)
-    
-    getTemplateTags(element) {
-        return this.template.querySelector(element)
-    }   
-
-    get isFirstPage() {
-        return this.state.page == 1
-    }
-
-    get isLastPage() {
-        return this.state.page == this.totalPage
-    }
+    totalPage = Math.ceil(this.data.length / this.perPage)  
 
     controller = {
         next() {
             const hasNextPage = this.state.page < this.totalPage
             if (hasNextPage) this.state.page++
-            console.log(this.state.page)   
+              
             this.update()         
         }, 
         prev() {
             const hasPrevPage = this.state.page > 1
             if (hasPrevPage) this.state.page--
-            console.log(this.state.page)
+          
             this.update()
         },
         goTo(event) {
@@ -50,10 +34,79 @@ export default class DynamicPagination extends LightningElement {
             if (lowerThanMinPages)  this.state.page = 1
             if (availablePage)      this.state.page = +page
             if (higherThanMaxPages) this.state.page = this.totalPage  
-            console.log(page)
-            console.log(this.state.page)
+
             this.update()
         }
+    }    
+    update() {        
+        let page    = this.state.page - 1
+        let start   = page  * this.perPage
+        let end     = start + this.perPage     
+       
+        this.paginatedItems = this.data.slice(start, end)              
+    } 
+
+    appendToDiv() {
+        const container = this.template.querySelector('.test .clausula')
+        console.log(this.data[1])
+        container.setAttribute = this.data[1]
+    }    
+
+    convertToView(dataRaw) {
+        let inputField = '<lightning-input type = "String" name = "Field {}" onchange = {changeClause}</lightning-input>'           
+    
+        let dataWithParagraph = []  
+        for (let j = 0; j < dataRaw.length; j++) {
+            dataWithParagraph.push('<p>' + dataRaw[j] + '</p>')
+        }     
+
+        let dataWithInputs = []  
+        for (let x = 0; x < dataWithParagraph.length; x++) {
+            dataWithInputs.push(dataWithParagraph[x].replace(/\{\d{1,2}\}/g, inputField))
+        }
+
+        let aux
+        let final = []
+
+        for (let z = 0; z < dataWithInputs.length; z++) {
+        
+            let totalMatches = dataWithInputs[z].match(/\{\}/g).length          
+        
+            for (let i = 0; i < totalMatches; i++) { 
+                if (i == 0) {
+                    aux = dataWithInputs[z].replace(/\{\}/, i)   
+                } 
+                else {
+                    aux = aux.replace(/\{\}/, i)              
+                }                
+            }    
+            final[z] = aux     
+        }
+        return final
+    }
+
+    changeClause() {
+        console.log('to define')
+    }
+
+    get isFirstPage() {
+        return this.state.page == 1
+    }
+
+    get isLastPage() {
+        return this.state.page == this.totalPage
+    }
+    
+    connectedCallback() {               
+        this.update()
+        
+        
+    }
+    renderedCallback() {  
+        
+        
+        //const tst = this.template.querySelector('.controls')      
+        //console.log(tst)
     }
     /*
     button = {    
@@ -96,24 +149,5 @@ export default class DynamicPagination extends LightningElement {
             }
             return { maxLeft, maxRight}
         }
-    }*/    
-   
-    update() {        
-        let page    = this.state.page - 1
-        let start   = page  * this.perPage
-        let end     = start + this.perPage
-        console.log(this.formatedData)
-       
-        this.paginatedItems = this.data.slice(start, end)         
-    }   
-    
-    connectedCallback() {               
-        this.update()
-    }
-    renderedCallback() {  
-        //const tst = this.template.querySelector('.controls')      
-        //console.log(tst)
-    }
-
-    
+    }*/     
 }
