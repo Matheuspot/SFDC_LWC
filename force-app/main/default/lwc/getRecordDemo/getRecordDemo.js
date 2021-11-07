@@ -24,7 +24,11 @@ export default class GetRecordDemo extends LightningElement {
        this.isEqual = value
     }
     
-    @wire (getRecord, {recordId : '$recordId', fields : [NAME_FIELD, OWNER_NAME_FIELD, ANNUAL_REVENUE_FIELD, RATING_FIELD]})    
+    @wire (getRecord, {recordId : '$recordId', 
+    //only selected fields | fields : [NAME_FIELD, OWNER_NAME_FIELD, ANNUAL_REVENUE_FIELD, RATING_FIELD]})   
+    // only fields displayed on layout | layoutTypes: ['Compact'], modes: ['View']})
+    // all object fields | layoutTypes: ['Full'], modes: ['View']})
+    layoutTypes: ['Full'], modes: ['View']})
     accountHandler({data}){
         if (data) {
             console.log(data)
@@ -38,11 +42,5 @@ export default class GetRecordDemo extends LightningElement {
 
     validateRate() {
         this.verification = this.rating == 'Warm'                
-    }
-
-    renderedCallback() {
-        console.log(' -- start rendered callback --')
-        console.log(this.name)
-        console.log(' -- finish rendered callback --')
     }
 }
