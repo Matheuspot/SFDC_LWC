@@ -1,7 +1,8 @@
 import { LightningElement, wire } from 'lwc';
 import { getListUi } from 'lightning/uiListApi';
-import CONTACT_OBJECT from '@salesforce/schema/Contact'
-import TITLE_FIELD from '@salesforce/schema/Contact.Title'
+import { getListInfoByName } from 'lightning/uiListsApi';
+import CONTACT_OBJECT from '@salesforce/schema/Contact';
+import TITLE_FIELD from '@salesforce/schema/Contact.Title';
 
 export default class GetListUiDemoLwc extends LightningElement {
     contacts = []
