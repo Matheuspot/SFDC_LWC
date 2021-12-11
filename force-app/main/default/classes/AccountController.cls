@@ -2,7 +2,7 @@ public with sharing class AccountController {
 
     @AuraEnabled (cacheable = true)
     public static List<Account> getAccountList() {
-        return [SELECT Id, Name, Type, Industry FROM Account LIMIT 5];
+        return [SELECT Id, Name, Type, Industry FROM Account LIMIT 10];
     }
 
     @AuraEnabled (cacheable = true)
@@ -14,4 +14,10 @@ public with sharing class AccountController {
         String key = '%' + searchKey + '%';
         return [SELECT Id, Name, Type, Industry FROM Account WHERE Name LIKE : key LIMIT 5];
     }
+
+    @AuraEnabled (cacheable = true)
+    public static List<Id> setSelectedRows(List<Id> selectedRowsId) {        
+        return new List<Id>(selectedRowsId);
+    }
+    
 }

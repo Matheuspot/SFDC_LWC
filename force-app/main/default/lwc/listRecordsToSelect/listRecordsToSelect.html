@@ -1,0 +1,39 @@
+<template>
+    <header class="slds-modal__header">
+        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Accounts List</h2>
+    </header>
+      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <lightning-layout>
+            <template if:true={lsAccounts}>
+                <lightning-datatable
+                    data = {lsAccounts}
+                    columns = {columns}
+                    onrowselection = {getSelectedRows}
+                    selected-rows = {rowsToDisplay}
+                    key-field = "Id">
+                </lightning-datatable>  
+                <template if:true = {error}>  
+                    {error}
+                </template>
+            </template> 
+        </lightning-layout>        
+      </div> 
+    <footer class="slds-modal__footer"> 
+        <lightning-layout-item size="4">
+            <lightning-button 
+                label="Next" 
+                variant="destructive-text"         
+                icon-name = "utility:chevroleft"  
+                disabled = {isLastPage}                                  
+                onclick = {next}/>
+            </lightning-button>
+            <lightning-button 
+                label="Previous" 
+                variant="brand-outline"
+                icon-name = "utility:chevroleft"   
+                disabled = {isFirstPage}                                   
+                onclick = {prev}/>
+            </lightning-button>
+        </lightning-layout-item>  
+    </footer>
+</template>
