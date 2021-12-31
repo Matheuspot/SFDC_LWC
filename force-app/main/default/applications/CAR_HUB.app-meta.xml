@@ -13,7 +13,7 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>CAR HUB</label>
     <navType>Standard</navType>
-    <tabs>standard-Account</tabs>
+    <tabs>Car_Explorer</tabs>
     <tabs>Car__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>CAR_HUB_UtilityBar</utilityBar>
