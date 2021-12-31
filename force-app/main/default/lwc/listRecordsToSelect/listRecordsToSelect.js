@@ -22,12 +22,9 @@ export default class ListRecordsToSelect extends LightningElement {
 
     @wire (getAccountList) 
     accounts ({data, error}) {
-        let auxArray = []
-        auxArray.push('0015e000002qJ7ZAAU')
         if (data) {
             this.lsAccounts = data      
-            this.definePagination = data  
-            this.rowsToDisplay = auxArray
+            this.definePagination = data                            
         }
         if (error) {
             this.error = error
@@ -38,8 +35,7 @@ export default class ListRecordsToSelect extends LightningElement {
     setSelectedRows(value) {                
         getSelectedRows({selectedRowsId : value})
             .then(result => {
-                this.rowsToDisplay = result
-                console.log('Imperativo: ' + result)
+                this.selectedRowToDisplay = result              
             })
             .catch (error => {
                 this.error = error
@@ -48,7 +44,7 @@ export default class ListRecordsToSelect extends LightningElement {
 
     set definePagination(value) { 
         this.page = 0    
-        this.perPage = 2
+        this.perPage = 5
         this.totalPage = Math.ceil(value.length / this.perPage)   
         this.update()        
     }
@@ -64,6 +60,10 @@ export default class ListRecordsToSelect extends LightningElement {
         return this.page == this.totalPage - 1
     }
 
+    set selectedRowToDisplay(value) {
+        this.rowsToDisplay = value
+    }
+
     getSelectedRows() {
         this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows(); 
         this.checkSelectedRow(this.selectedRows)          
@@ -71,14 +71,13 @@ export default class ListRecordsToSelect extends LightningElement {
 
     checkSelectedRow(value) {        
         value.forEach(item => {           
-            if (item.id != '' && !this.auxArray.includes(item.Id)) {
+            //if (item.id != '' && !this.auxArray.includes(item.Id)) {
                 this.auxArray.push(item.Id)
-            }
+            //}
         })
 
-
-
-        this.setSelectedRows(this.auxArray)   
+        this.setSelectedRows(this.auxArray) 
+        this.selectedRowToDisplay = this.auxArray   
     }
 
     next() {  
@@ -102,6 +101,6 @@ export default class ListRecordsToSelect extends LightningElement {
         let start   = page  * this.perPage
         let end     = start + this.perPage   
 
-        this.updateArray = this.lsAccounts.slice(start, end)                       
+        this.updateArray = this.lsAccounts.slice(start, end)                              
     }   
 }

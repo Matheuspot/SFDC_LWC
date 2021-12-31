@@ -4,9 +4,9 @@
     </header>
       <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
         <lightning-layout>
-            <template if:true={lsAccounts}>
+            <template if:true={paginatedItems}>
                 <lightning-datatable
-                    data = {lsAccounts}
+                    data = {paginatedItems}
                     columns = {columns}
                     onrowselection = {getSelectedRows}
                     selected-rows = {rowsToDisplay}
