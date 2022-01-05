@@ -1,6 +1,8 @@
 <template>
     <lightning-card title = "Filters" icon-name = "standard:calibration">
         <div class = "slds-m-horizontal_medium">
+
+            <!-- Car search-->
             <lightning-input 
                 label = "Search key" 
                 type = "search" 
@@ -8,6 +10,7 @@
                 onchange = {handleSearchKeyChange}>
             </lightning-input>
 
+            <!-- Price Slider -->
             <section class = "slider_section">
                 <lightning-slider label = "Max Price" 
                     step = "100" 
@@ -17,6 +20,8 @@
                     onchange = {handleMaxPriceChange}>
                 </lightning-slider>
             </section>
+
+            <!-- Category options-->
             <section>
                 <h2 class = "slds-p-bottom_xxx-small"><strong>Category</strong></h2>
                 <template if:true = {categories.data}>
@@ -36,6 +41,8 @@
                     <div>{categoryError}</div>
                 </template>
             </section>
+
+            <!-- Make options-->
             <section class = "slds-p-top_medium">
                 <h2 class = "slds-p-bottom_xxx-small"><strong>Make</strong></h2>
                 <template if:true = {makers.data}>
@@ -51,6 +58,8 @@
                         </lightning-input>  
                     </template>
                 </template>
+
+                <!-- Data error return -->
                 <template if:true = {makers.error}>
                     <div>{makeTypeError}</div>
                 </template>
