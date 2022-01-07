@@ -20,11 +20,14 @@ export default class CarFilter extends LightningElement {
     }
     
     @wire(getObjectInfo, {objectApiName : CAR_OBJECT}) carObjectInfo
+
+    // For category checkboxes
     @wire(getPicklistValues, {
                                 recordTypeId : '$carObjectInfo.data.defaultRecordTypeId',
                                 fieldApiName : CATEGORY_FIELD
     })categories
 
+    // For makers checkboxes
     @wire(getPicklistValues, {
                                 recordTypeId : '$carObjectInfo.data.defaultRecordTypeId',
                                 fieldApiName : MAKE_FIELD
