@@ -24,7 +24,7 @@ public with sharing class CarController {
 
             if (!String.isEmpty(filters.searchKey)) {
                 key = '%' + filters.searchKey + '%';
-                criteria.add('Name LIKE: key');
+                criteria.add('Name LIKE : key');
             }
 
             if (filters.maxPrice >= 0) {
@@ -40,13 +40,13 @@ public with sharing class CarController {
             }
 
             if (criteria.size() > 0 ) {
-                whereClause = 'WHERE' + String.join(criteria, 'AND ');
+                whereClause = 'WHERE ' + String.join(criteria, ' AND ');
             }
         }
 
         String query = 'SELECT Id, Name, MSRP__c, Description__c, Category__c, Picture_URL__c ' 
-        + 'FROM Car__c' +
-        whereClause + ' WITH SECURITY_ENFORCED' +' ORDER BY Name';
+        + 'FROM Car__c ' +
+        whereClause + ' WITH SECURITY_ENFORCED' + ' ORDER BY Name';
 
         System.debug(query);
 
