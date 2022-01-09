@@ -18,9 +18,10 @@ import CARS_FILTERED_MESSAGE from '@salesforce/messageChannel/CarsFiltered__c'
 // ====================================================== //
 export default class CarFilter extends LightningElement {
 
+    timer
     categoryError = CATEGORY_ERROR
     makeTypeError = MAKE_ERROR
-
+    
     // Load Context for LMS
     @wire (MessageContext)
     messageContext    
@@ -48,24 +49,42 @@ export default class CarFilter extends LightningElement {
     handleSearchKeyChange(event) {
       console.log(event.target.value)
       this.filters = {...this.filters, "searchKey": event.target.value}
-      this.sendDataToCarList()
+      this.sendDataToCarList()     
     }
-
+    
+    // Search by car price
     handleMaxPriceChange(event) {
         console.log(event.target.value)
         this.filters = {...this.filters, "maxPrice": event.target.value}
         this.sendDataToCarList()
     }
 
+    // Search by selected checkboxes
     handleCheckBox(event) {
+
         const {name, value} = event.target.dataset
-        console.log("name", name)
-        console.log("value", value)
+
+        if (!this.filters.categories) {
+            const categories = this.categories.data.values.map(item => item.value)
+            const makers = this.makers.data.values.map(item => item.value)
+            this.filters = {...this.filters, categories, makers}
+        }            
+        if (event.target.checked) {
+            if(!this.filters[name].includes(value)) {
+                this.filters[name] = [...this.filters[name], value]
+            } 
+        } else {
+            this.filters[name] = this.filters[name].filter(item => item !== value)
+        }        
+        this.sendDataToCarList()
     }
 
     sendDataToCarList() {
-        publish(this.messageContext, CARS_FILTERED_MESSAGE, {
-            filters : this.filters
-        })
+        window.clearTimeout(this.timer)
+        this.timer = window.setTimeout(() => {
+            publish(this.messageContext, CARS_FILTERED_MESSAGE, {
+                filters : this.filters
+            })
+        }, 400)     
     }
 }
