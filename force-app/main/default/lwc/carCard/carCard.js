@@ -1,4 +1,5 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
+import {getFieldValue} from 'lightning/uiRecordApi'
 
 // Car Schema
 import NAME_FIELD from '@salesforce/schema/Car__c.Name'
@@ -10,8 +11,15 @@ import FUEL_FIELD from '@salesforce/schema/Car__c.Fuel_Type__c'
 import SEATS_FIELD from '@salesforce/schema/Car__c.Number_of_Seats__c'
 import CONTROL_FIELD from '@salesforce/schema/Car__c.Control__c'
 
-import {getFieldValue} from 'lightning/uiRecordApi'
+// ======== LMS AND MESSAGE CHANNEL
+import {subscribe, unsubscribe, MessageContext} from 'lightning/messageService'
+import CAR_SELECTED_MESSAGE from '@salesforce/messageChannel/CarSelected__c';
 export default class CarCard extends LightningElement {
+
+    // Load content for LSM
+    @wire(MessageContext)
+    messageContext;
+
     // Exposing fields to make them avaiable in the template
     categoryField = CATEGORY_FIELD
     makeField = MAKE_FIELD
@@ -20,17 +28,38 @@ export default class CarCard extends LightningElement {
     seatsField = SEATS_FIELD
     controlField = CONTROL_FIELD
 
-    // Car record Id
-    recordId = 'a025e000007hKFLAA2'
-
-    // Car fields displayed with specific format
+    // Car data
+    recordId
     carName
-    carPictureUrl
+    carPictureUrl    
 
+    // Subscription reference for carSelected
+    carSelectionSubscription
+
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+
+    subscribeToMessageChannel() {        
+        this.carSelectionSubscription = subscribe(this.messageContext, CAR_SELECTED_MESSAGE, (message) => {
+            this.handleMessage(message)            
+        });        
+    }
+
+    handleMessage(message) {
+        this.recordId = message.carId;
+    }
+
+    // Subscription reference for carSelected
     handleRecordLoaded(event) {
         const {records} = event.detail
         const recordData = records[this.recordId]
         this.carName = getFieldValue(recordData, NAME_FIELD)
         this.carPictureUrl = getFieldValue(recordData, PICTURE_URL_FIELD)
+    }
+
+    disconnectedCallback() {
+        unsubscribe(this.carSelectionSubscription)
+        this.carSelectionSubscription = null
     }
 }
