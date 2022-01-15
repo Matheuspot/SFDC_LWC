@@ -1,7 +1,11 @@
 import { LightningElement, wire } from 'lwc';
 import {getFieldValue} from 'lightning/uiRecordApi'
 
+// Import navigation
+import { NavigationMixin } from 'lightning/navigation';
+
 // Car Schema
+import CAR_OBJECT from '@salesforce/schema/Car__c'
 import NAME_FIELD from '@salesforce/schema/Car__c.Name'
 import PICTURE_URL_FIELD from '@salesforce/schema/Car__c.Picture_URL__c'
 import CATEGORY_FIELD from '@salesforce/schema/Car__c.Category__c'
@@ -14,7 +18,7 @@ import CONTROL_FIELD from '@salesforce/schema/Car__c.Control__c'
 // ======== LMS AND MESSAGE CHANNEL
 import {subscribe, unsubscribe, MessageContext} from 'lightning/messageService'
 import CAR_SELECTED_MESSAGE from '@salesforce/messageChannel/CarSelected__c';
-export default class CarCard extends LightningElement {
+export default class CarCard extends NavigationMixin(LightningElement) {
 
     // Load content for LSM
     @wire(MessageContext)
@@ -34,11 +38,7 @@ export default class CarCard extends LightningElement {
     carPictureUrl    
 
     // Subscription reference for carSelected
-    carSelectionSubscription
-
-    connectedCallback() {
-        this.subscribeToMessageChannel();
-    }
+    carSelectionSubscription   
 
     subscribeToMessageChannel() {        
         this.carSelectionSubscription = subscribe(this.messageContext, CAR_SELECTED_MESSAGE, (message) => {
@@ -56,6 +56,22 @@ export default class CarCard extends LightningElement {
         const recordData = records[this.recordId]
         this.carName = getFieldValue(recordData, NAME_FIELD)
         this.carPictureUrl = getFieldValue(recordData, PICTURE_URL_FIELD)
+    }
+
+    // Navigate to record page
+    handleNavigationAction() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: this.recordId,
+                objectApiName: CAR_OBJECT.objectApiName,
+                actionName: 'view',
+            },
+        });
+    }
+
+    connectedCallback() {
+        this.subscribeToMessageChannel();
     }
 
     disconnectedCallback() {
