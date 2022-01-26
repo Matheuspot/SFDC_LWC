@@ -10,11 +10,11 @@ export default class RecordEditForm extends LightningElement {
     objectName = CONTACT_OBJECT
 
     fields = {
-        accountField    : ACCOUNT_FIELD,
-        nameField       : NAME_FIELD,
-        titleField      : TITLE_FIELD,
-        phoneField      : PHONE_FIELD,
-        emailField      : EMAIL_FIELD
+        accountField : ACCOUNT_FIELD,
+        nameField    : NAME_FIELD,
+        titleField   : TITLE_FIELD,
+        phoneField   : PHONE_FIELD,
+        emailField   : EMAIL_FIELD
     }
 
     handleReset() {
