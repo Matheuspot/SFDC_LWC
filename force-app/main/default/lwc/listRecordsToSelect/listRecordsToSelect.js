@@ -2,22 +2,24 @@ import { LightningElement, wire, track} from 'lwc';
 import getAccountList from '@salesforce/apex/AccountController.getAccountList';
 import getSelectedRows from '@salesforce/apex/AccountController.setSelectedRows';
 
-const columns =  [
-                    { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
-                    { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
-                ]
 export default class ListRecordsToSelect extends LightningElement {
 
-@track page             = null
-@track perPage          = null
-@track auxArray         = [] 
-@track totalPage        = null
-@track lsAccounts       = []
-@track selectedRows     = []
-@track columns          = columns
-@track rowsToDisplay    = []
-@track paginatedItems   = []
+@track columns = 
+    [
+        { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
+        { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
+    ];
+
+@track rowsToDisplay = []
 @track allRowsToDisplay = []
+@track selectedRows = []
+@track lsAccounts = []
+@track error
+@track paginatedItems = []
+@track perPage
+@track page
+@track totalPage
+@track auxArray = []  
 
     @wire (getAccountList) 
     accounts ({data, error}) {
@@ -42,10 +44,6 @@ export default class ListRecordsToSelect extends LightningElement {
         this.paginatedItems = value
     }
 
-    set selectedRowToDisplay(value) {
-        this.rowsToDisplay = value
-    }
-
     get isFirstPage() {
         return this.page == 0
     }
@@ -53,50 +51,57 @@ export default class ListRecordsToSelect extends LightningElement {
         return this.page == this.totalPage - 1
     }
 
-    getSelectedRows() {
-        this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows(); 
-        this.filterSelectedRows()       
+    set selectedRowToDisplay(value) {
+        this.rowsToDisplay = value
     }
 
-    filterSelectedRows() {    
-        let filteredArray = []   
-        let auxArrayRows = [] 
-        let auxArray = []
+    getSelectedRows() {
+        this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows();       
+        this.checkSelectedRow()       
+    }
+
+    checkSelectedRow() {    
+        let filteredArray = []  
+        let deselectedRows = []
+        
+        if ( this.auxArray.length < this.selectedRows.length ) {
+            console.log('selected')
+        } else {
+            console.log('deselected')
+            let deselectedRecs = this.auxArray
+            .filter(x => !this.selectedRows.includes(x))
+            .concat(this.selectedRows.filter(x => !this.auxArray.includes(x)));
+            deselectedRows.push(deselectedRecs)
+
+
+            console.log('deselected rows: ' + JSON.stringify(deselectedRecs))
+        }
+
+        this.auxArray = this.selectedRows
+        console.log('all removed: ' + JSON.stringify(deselectedRows))
+       
+
+
+
+        console.log('SELECTED ROWS: ' + JSON.stringify(this.selectedRows))
         
         filteredArray = this.selectedRows
             .filter(item => !this.allRowsToDisplay.includes(item.Id))
-            .map(item => item.Id)         
-
-        console.log('Filtered array: ' + JSON.stringify(filteredArray))    
-        //this.allRowsToDisplay = [...this.allRowsToDisplay, filteredArray]
-
-        auxArray = this.allRowsToDisplay
-                 .filter(x => !filteredArray.includes(x.Id))
-                 .concat(filteredArray.filter(x => !this.allRowsToDisplay.includes(x.Id)));
-
-        //console.log('Array: ' + auxArray)
-
-       // auxArrayRows = [...this.allRowsToDisplay] 
-       this.allRowsToDisplay = [...this.allRowsToDisplay, filteredArray]
-
-        //this.allRowsToDisplay = [...filteredArray] - failed
-        //  this.allRowsToDisplay = [...this.allRowsToDisplay, filteredArray] -failed 
-        //this.allRowsToDisplay.push(filteredArray) - failed
-
-       // console.log('SELECTED rows to display: ' + JSON.stringify(this.selectedRows))
-        console.log('rows to display: ' + this.allRowsToDisplay)
-    }
-
-    setSelectRows() {
-        if (this.allRowsToDisplay > 0) this.selectedRowToDisplay = this.allRowsToDisplay 
+            .map(item => item.Id)               
+          
+        this.allRowsToDisplay = this.allRowsToDisplay
+            .filter(item =>!filteredArray.includes(item.Id))
+            .concat(filteredArray.filter(item => !this.allRowsToDisplay.includes(item.Id)))  
     }
 
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
-        if (hasNextPage) this.page++         
-         
+        if (hasNextPage) this.page++   
+        
+        //this.setSelectedRows() 
+        this.selectedRowToDisplay = this.allRowsToDisplay 
+          
         this.update()    
-        this.setSelectRows()
         console.log('next: ' + this.allRowsToDisplay)        
     }
 
@@ -104,8 +109,9 @@ export default class ListRecordsToSelect extends LightningElement {
         let hasPrevPage = this.page > 0
         if (hasPrevPage) this.page--
 
-        this.update()    
-        this.setSelectRows()        
+        //this.setSelectedRows()   
+        this.selectedRowToDisplay = this.allRowsToDisplay       
+        this.update()           
         console.log('prev: ' + this.allRowsToDisplay)      
     }
 
