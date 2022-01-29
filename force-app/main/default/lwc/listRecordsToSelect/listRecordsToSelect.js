@@ -61,55 +61,74 @@ export default class ListRecordsToSelect extends LightningElement {
     }
 
     checkSelectedRow() {    
-        let filteredArray = []  
-        let deselectedRows = []
+        let newRowsId = []   
+        let oldRowsId = []   
+        let arrRemovedIds = []
+        let arrAddedIds = []
+        let filteredArray = []
         
-        if ( this.auxArray.length < this.selectedRows.length ) {
-            console.log('selected')
-        } else {
-            console.log('deselected')
-            let deselectedRecs = this.auxArray
-            .filter(x => !this.selectedRows.includes(x))
-            .concat(this.selectedRows.filter(x => !this.auxArray.includes(x)));
-            deselectedRows.push(deselectedRecs)
+        // filter to pop removed rows Id
+        oldRowsId = this.getDeselectedRows()           
 
+        // filter to include only new rows Id
+        newRowsId = this.selectedRows
+            .filter(item => !this.allRowsToDisplay.includes(item.Id)).map(item => item.Id)  
 
-            console.log('deselected rows: ' + JSON.stringify(deselectedRecs))
+        
+        arrRemovedIds = this.allRowsToDisplay
+        .filter(item => (!oldRowsId.includes(item.Id)))    
+        .map(item => item.Id)
+
+        console.log('removed: ' + arrRemovedIds)     
+    
+        arrAddedIds = this.allRowsToDisplay
+        .filter(item => (!newRowsId.includes(item.Id)))
+        .map(item => item.Id)
+        
+        console.log('added: ' + arrAddedIds)  
+    
+
+       this.allRowsToDisplay = [...this.allRowsToDisplay, newRowsId ]
+        
+                 
+        
+
+        console.log('res:' + this.allRowsToDisplay)      
+            //.concat(filteredArray.filter(item => !this.allRowsToDisplay.includes(item.Id)))
+       
+    }    
+    getDeselectedRows() {
+
+        let deselectedRecs = []
+        let auxArray = []
+
+        if (this.auxArray.length > this.selectedRows.length) {                     
+            deselectedRecs = this.auxArray
+                .filter(x => !this.selectedRows.includes(x))
+                .concat(this.selectedRows.filter(x => !this.auxArray.includes(x)));                                          
         }
 
-        this.auxArray = this.selectedRows
-        console.log('all removed: ' + JSON.stringify(deselectedRows))
-       
-
-
-
-        console.log('SELECTED ROWS: ' + JSON.stringify(this.selectedRows))
+        this.auxArray = this.selectedRows 
+        auxArray = deselectedRecs.map(item => item.Id)
         
-        filteredArray = this.selectedRows
-            .filter(item => !this.allRowsToDisplay.includes(item.Id))
-            .map(item => item.Id)               
-          
-        this.allRowsToDisplay = this.allRowsToDisplay
-            .filter(item =>!filteredArray.includes(item.Id))
-            .concat(filteredArray.filter(item => !this.allRowsToDisplay.includes(item.Id)))  
+        if (auxArray.length < 1) return ''
+        if (auxArray.length > 0) return auxArray        
     }
 
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
         if (hasNextPage) this.page++   
-        
-        //this.setSelectedRows() 
-        this.selectedRowToDisplay = this.allRowsToDisplay 
-          
+      
+        this.selectedRowToDisplay = this.allRowsToDisplay           
         this.update()    
+
         console.log('next: ' + this.allRowsToDisplay)        
     }
 
     prev() {
         let hasPrevPage = this.page > 0
         if (hasPrevPage) this.page--
-
-        //this.setSelectedRows()   
+ 
         this.selectedRowToDisplay = this.allRowsToDisplay       
         this.update()           
         console.log('prev: ' + this.allRowsToDisplay)      
