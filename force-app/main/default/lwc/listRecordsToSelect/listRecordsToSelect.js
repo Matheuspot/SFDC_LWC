@@ -4,21 +4,18 @@ import getAccountList from '@salesforce/apex/AccountController.getAccountList';
 const columns = [
                     { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
                     { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
-                ];
+                ]
 export default class ListRecordsToSelect extends LightningElement {
 
-@track columns = columns 
-
-@track rowsToDisplay = []
 @track allSelectedRows = []
-@track selectedRows = []
-@track lsAccounts = []
-@track error
-@track paginatedItems = []
-@track perPage
-@track page
-@track totalPage
-
+@track rowsToDisplay   = []
+@track selectedRows    = []
+@track paginatedItems  = []
+@track lsAccounts      = []
+@track totalPage       = null
+@track columns         = columns 
+@track perPage         = null
+@track page            = null
 
     @wire (getAccountList) 
     accounts ({data, error}) {
@@ -60,7 +57,7 @@ export default class ListRecordsToSelect extends LightningElement {
         console.log('Current selected row: ' + JSON.stringify(this.selectedRows))           
      
     }
-
+    
     setSelectedRows() {    
         for(let row of this.paginatedItems){
             if(!this.allSelectedRows.includes(row) && this.selectedRows.includes(row)){
@@ -76,12 +73,16 @@ export default class ListRecordsToSelect extends LightningElement {
         console.log('All Selected rows: ' + JSON.stringify(this.allSelectedRows))
     }
 
+    buildArrayWithIdsOnly() {        
+        return this.allSelectedRows.map(item => item.Id)          
+    }
+
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
         if (hasNextPage) this.page++   
         
         this.setSelectedRows()        
-        this.selectedRowToDisplay = this.allSelectedRows 
+        this.selectedRowToDisplay = this.buildArrayWithIdsOnly()
 
         this.update()                  
     }
@@ -91,7 +92,7 @@ export default class ListRecordsToSelect extends LightningElement {
         if (hasPrevPage) this.page--
 
         this.setSelectedRows()
-        this.selectedRowToDisplay = this.allSelectedRows 
+        this.selectedRowToDisplay = this.buildArrayWithIdsOnly() 
 
         this.update()    
     }
@@ -102,5 +103,5 @@ export default class ListRecordsToSelect extends LightningElement {
         let end     = start + this.perPage   
 
         this.updateArray = this.lsAccounts.slice(start, end)                              
-    }   
+    }      
 }
