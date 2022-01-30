@@ -1,5 +1,7 @@
 import { LightningElement, wire, track} from 'lwc';
 import getAccountList from '@salesforce/apex/AccountController.getAccountList';
+import getSelectedRows from '@salesforce/apex/AccountController.setSelectedRows';
+
 export default class ListRecordsToSelect extends LightningElement {
 
 @track columns = 
@@ -59,71 +61,32 @@ export default class ListRecordsToSelect extends LightningElement {
     }
 
     checkSelectedRow() {    
-        let newRowsId = []   
-        let oldRowsId = []   
-        let arrRemovedIds = []
-        let arrAddedIds = []
-        let filteredArray = []
-        
-        // filter to pop removed rows Id
-        oldRowsId = this.getUncheckedRows()     
-        console.log('To remove: ' + oldRowsId)        
+        let filteredArray = []  
+        let deselectedRows = []
 
-        for (let newRow of this.selectedRows) {
-            if (!this.allRowsToDisplay.includes(newRow)) {
-                this.allRowsToDisplay.push(newRow.Id)
-            }           
-        }
-
-        for (let oldRow of oldRowsId) {
-            if (this.allRowsToDisplay.includes(oldRow) && oldRowsId.length > 0) {
-                let index = this.allRowsToDisplay.indexOf(oldRow);
-                this.allRowsToDisplay.splice(index, 1)
-            }           
-        }          
-        console.log('res:' + this.allRowsToDisplay)      
-        
-       
-    }    
-    getUncheckedRows() {
-
-        let deselectedRecs = []
-        let auxArray = []
-
-        if (this.auxArray.length > this.selectedRows.length) {                     
-            deselectedRecs = this.auxArray
-                .filter(x => !this.selectedRows.includes(x))
-                .concat(this.selectedRows.filter(x => !this.auxArray.includes(x)));                                          
-        }
-
-        this.auxArray = this.selectedRows 
-        auxArray = deselectedRecs.map(item => item.Id)
-        
-        if (auxArray.length < 1) return ''
-        if (auxArray.length > 0) return auxArray        
+        filteredArray = this.selectedRows
+            .filter(item => !this.allRowsToDisplay.includes(item.Id))
+            .map(item => item.Id)               
+          
+        this.allRowsToDisplay = this.allRowsToDisplay
+            .filter(item =>!filteredArray.includes(item.Id))
+            .concat(filteredArray.filter(item => !this.allRowsToDisplay.includes(item.Id)))  
     }
 
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
         if (hasNextPage) this.page++   
       
-        this.selectedRowToDisplay = this.allRowsToDisplay     
-        this.update()   
-              
-
-        console.log('next: ' + this.allRowsToDisplay)        
+        this.selectedRowToDisplay = this.allRowsToDisplay 
+        this.update()                
     }
 
     prev() {
         let hasPrevPage = this.page > 0
         if (hasPrevPage) this.page--
- 
-        this.selectedRowToDisplay = this.allRowsToDisplay          
-        this.update()    
-
-        console.log('Rows to display: ' + this.rowsToDisplay)
-           
-        console.log('prev: ' + this.allRowsToDisplay)      
+      
+        this.selectedRowToDisplay = this.allRowsToDisplay       
+        this.update()                
     }
 
     update() {        
