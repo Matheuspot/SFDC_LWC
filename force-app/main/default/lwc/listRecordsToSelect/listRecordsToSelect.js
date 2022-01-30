@@ -7,9 +7,10 @@ const columns = [
                 ];
 export default class ListRecordsToSelect extends LightningElement {
 
-@track columns = columns
+@track columns = columns 
+
 @track rowsToDisplay = []
-@track allRowsToDisplay = []
+@track allSelectedRows = []
 @track selectedRows = []
 @track lsAccounts = []
 @track error
@@ -17,7 +18,7 @@ export default class ListRecordsToSelect extends LightningElement {
 @track perPage
 @track page
 @track totalPage
-@track auxArray = []  
+
 
     @wire (getAccountList) 
     accounts ({data, error}) {
@@ -53,38 +54,46 @@ export default class ListRecordsToSelect extends LightningElement {
         this.rowsToDisplay = value
     }
 
-    getSelectedRows() {
-        this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows();       
-        this.checkSelectedRow()             
+    getSelectedRows(event) {
+        //this.selectedRows = [...this.template.querySelector('lightning-datatable').getSelectedRows()]; 
+        this.selectedRows = [...event.detail.selectedRows]; 
+        console.log('Current selected row: ' + JSON.stringify(this.selectedRows))           
+     
     }
 
-    checkSelectedRow() {    
-        let filteredArray = []  
-        let deselectedRows = []
-
-        filteredArray = this.selectedRows
-            .filter(item => !this.allRowsToDisplay.includes(item.Id))
-            .map(item => item.Id)               
-          
-        this.allRowsToDisplay = this.allRowsToDisplay
-            .filter(item =>!filteredArray.includes(item.Id))
-            .concat(filteredArray.filter(item => !this.allRowsToDisplay.includes(item.Id)))  
+    setSelectedRows() {    
+        for(let row of this.paginatedItems){
+            if(!this.allSelectedRows.includes(row) && this.selectedRows.includes(row)){
+                this.allSelectedRows.push(row)
+            }           
+            if(this.allSelectedRows.includes(row) && !this.selectedRows.includes(row)){
+                let index = this.allSelectedRows.indexOf(row)
+                this.allSelectedRows.splice(index, 1)
+            }            
+        }    
+        
+        console.log('Selected rows: ' + JSON.stringify(this.selectedRows))
+        console.log('All Selected rows: ' + JSON.stringify(this.allSelectedRows))
     }
 
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
         if (hasNextPage) this.page++   
-      
-        this.selectedRowToDisplay = this.allRowsToDisplay 
-        this.update()                
+        
+        this.setSelectedRows()        
+        this.selectedRowToDisplay = this.allSelectedRows 
+
+        this.update()                  
     }
 
     prev() {
         let hasPrevPage = this.page > 0
         if (hasPrevPage) this.page--
-      
-        this.selectedRowToDisplay = this.allRowsToDisplay       
-        this.update()                
+
+        this.setSelectedRows()
+        this.selectedRowToDisplay = this.allSelectedRows 
+
+        this.update()    
     }
 
     update() {        
