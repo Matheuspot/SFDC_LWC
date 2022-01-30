@@ -1,19 +1,16 @@
 import { LightningElement, wire, track} from 'lwc';
 import getAccountList from '@salesforce/apex/AccountController.getAccountList';
-import getSelectedRows from '@salesforce/apex/AccountController.setSelectedRows';
-
-const columns = [
-                    { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
-                    { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
-                ];
 export default class ListRecordsToSelect extends LightningElement {
 
-@track columns = columns 
+@track columns = 
+    [
+        { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
+        { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
+    ];
 
 @track rowsToDisplay = []
-@track allSelectedRows = []
+@track allRowsToDisplay = []
 @track selectedRows = []
-@track currentSelectedRows = []
 @track lsAccounts = []
 @track error
 @track paginatedItems = []
@@ -57,60 +54,76 @@ export default class ListRecordsToSelect extends LightningElement {
     }
 
     getSelectedRows() {
-        this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows();      
-        this.setSelectedRow()       
+        this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows();       
+        this.checkSelectedRow()       
     }
 
-    setSelectedRow() {    
-
-        let aux = []
-        aux = this.selectedRows
-            .filter(element => !this.currentSelectedRows.includes(element.Id))
-            .map(element => element.Id)
+    checkSelectedRow() {    
+        let newRowsId = []   
+        let oldRowsId = []   
+        let arrRemovedIds = []
+        let arrAddedIds = []
+        let filteredArray = []
         
-       console.log('aux: ' + aux)
+        // filter to pop removed rows Id
+        oldRowsId = this.getUncheckedRows()     
+        console.log('To remove: ' + oldRowsId)        
+
+        for (let newRow of this.selectedRows) {
+            if (!this.allRowsToDisplay.includes(newRow)) {
+                this.allRowsToDisplay.push(newRow.Id)
+            }           
+        }
+
+        for (let oldRow of oldRowsId) {
+            if (this.allRowsToDisplay.includes(oldRow) && oldRowsId.length > 0) {
+                let index = this.allRowsToDisplay.indexOf(oldRow);
+                this.allRowsToDisplay.splice(index, 1)
+            }           
+        }          
+        console.log('res:' + this.allRowsToDisplay)      
+        
        
-       
-        this.currentSelectedRows.push(aux)
+    }    
+    getUncheckedRows() {
 
-        console.log('current: ' + this.currentSelectedRows)
+        let deselectedRecs = []
+        let auxArray = []
 
-            for(let row of this.lsAccounts){
-                if(!this.allSelectedRows.includes(row) && this.selectedRows.includes(row)){
-                    this.allSelectedRows.push(row)
-                }
-              
-                
-                if(this.allSelectedRows.includes(row) && !this.selectedRows.includes(row)){
-                    let index = this.allSelectedRows.indexOf(row)
-                    this.allSelectedRows.splice(index, 1)
-                }
-                
-            }
+        if (this.auxArray.length > this.selectedRows.length) {                     
+            deselectedRecs = this.auxArray
+                .filter(x => !this.selectedRows.includes(x))
+                .concat(this.selectedRows.filter(x => !this.auxArray.includes(x)));                                          
+        }
+
+        this.auxArray = this.selectedRows 
+        auxArray = deselectedRecs.map(item => item.Id)
         
-        
-        
+        if (auxArray.length < 1) return ''
+        if (auxArray.length > 0) return auxArray        
     }
 
     next() {  
         let hasNextPage = this.page < this.totalPage - 1
         if (hasNextPage) this.page++   
-        
-        //this.setSelectedRows() 
-        this.selectedRowToDisplay = this.allSelectedRows 
-          
-        this.update()    
-        //console.log('next: ' + JSON.stringify(this.allSelectedRows))        
+      
+        this.selectedRowToDisplay = this.allRowsToDisplay     
+        this.update()   
+              
+
+        console.log('next: ' + this.allRowsToDisplay)        
     }
 
     prev() {
         let hasPrevPage = this.page > 0
         if (hasPrevPage) this.page--
+ 
+        this.selectedRowToDisplay = this.allRowsToDisplay          
+        this.update()    
 
-        //this.setSelectedRows()   
-        this.selectedRowToDisplay = this.allSelectedRows       
-        this.update()           
-       // console.log('prev: ' + JSON.stringify(this.allSelectedRows))      
+        console.log('Rows to display: ' + this.rowsToDisplay)
+           
+        console.log('prev: ' + this.allRowsToDisplay)      
     }
 
     update() {        
