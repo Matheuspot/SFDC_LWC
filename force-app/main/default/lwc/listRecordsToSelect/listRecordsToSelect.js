@@ -1,15 +1,13 @@
 import { LightningElement, wire, track} from 'lwc';
 import getAccountList from '@salesforce/apex/AccountController.getAccountList';
-import getSelectedRows from '@salesforce/apex/AccountController.setSelectedRows';
 
+const columns = [
+                    { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
+                    { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
+                ];
 export default class ListRecordsToSelect extends LightningElement {
 
-@track columns = 
-    [
-        { label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true},
-        { label: 'Account Type', fieldName: 'Type', type: 'text', sortable: true}
-    ];
-
+@track columns = columns
 @track rowsToDisplay = []
 @track allRowsToDisplay = []
 @track selectedRows = []
@@ -57,7 +55,7 @@ export default class ListRecordsToSelect extends LightningElement {
 
     getSelectedRows() {
         this.selectedRows = this.template.querySelector('lightning-datatable').getSelectedRows();       
-        this.checkSelectedRow()       
+        this.checkSelectedRow()             
     }
 
     checkSelectedRow() {    
