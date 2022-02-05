@@ -111,6 +111,7 @@
 		<members>updateRecordDemo</members>
 		<members>wireApexWithParams</members>
 		<members>wireDemoUserDetail</members>
+		<members>thirdpartyFiles</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>53.0</version>

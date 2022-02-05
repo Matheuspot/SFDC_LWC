@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 import MOMENT from '@salesforce/resourceUrl/moment'
-import { loadScript } from 'lightning/platformResourceLoader'
+import ANIMATE from '@salesforce/resourceUrl/animate'
+import { loadScript, loadStyle } from 'lightning/platformResourceLoader'
 
 export default class ThirdPartyFiles extends LightningElement {
 
@@ -10,15 +11,14 @@ export default class ThirdPartyFiles extends LightningElement {
     renderedCallback() {
         if (this.isLibLoaded) {
             return 
-        } else {
-            // If I were to use several js classes I should have to implement Promise.all
-            //Promise.all([loadScript(this, MOMENT + '/moment/moment.min.js')]).then(() => {    
-            loadScript(this, MOMENT + '/moment/moment.min.js').then(() => {            
-                this.setDateOnScreen()                
-            }).catch(error => {
-                console.error(error)
-            })
-            this.isLibLoaded = true
+        } else {           
+            Promise.all([
+                loadStyle(this, ANIMATE + '/animate/animate.min.css'),
+                loadScript(this, MOMENT + '/moment/moment.min.js')
+            ]).then(() => {
+                this.setDateOnScreen()
+            })   
+            this.isLibLoaded = true       
         }
     }
 
