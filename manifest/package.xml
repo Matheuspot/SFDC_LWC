@@ -70,6 +70,7 @@
 		<members>displayContacts</members>
 		<members>dynamicCSS</members>
 		<members>editContactRecord</members>
+		<members>filePreviewAndDownloads</members>
 		<members>getListUiDemoLwc</members>
 		<members>getObjectInfoDemo</members>
 		<members>getPicklistValuesByRecordTypeDemo</members>
@@ -111,7 +112,6 @@
 		<members>updateRecordDemo</members>
 		<members>wireApexWithParams</members>
 		<members>wireDemoUserDetail</members>
-		<members>thirdpartyFiles</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>53.0</version>
