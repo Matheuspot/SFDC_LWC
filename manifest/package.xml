@@ -105,6 +105,7 @@
 		<members>similarCars</members>
 		<members>slotChildDemo</members>
 		<members>slotParentDemo</members>
+		<members>staticImages</members>
 		<members>stylingOne</members>
 		<members>stylingTwo</members>
 		<members>updateRecordDemo</members>
