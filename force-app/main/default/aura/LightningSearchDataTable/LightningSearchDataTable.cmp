@@ -1,0 +1,29 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="LightningSearchDataTableController">
+    
+    <!-- attributes -->
+    <aura:attribute name="data" type="Map"/>
+    <aura:attribute name="filteredData" type="Map"/>
+    <aura:attribute name="columns" type="List"/>
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{!this }" action="{!c.init }"/>
+		
+    	<span>
+        	<lightning:input 
+                onchange="{!c.searchTable}" 
+                type="search" 
+                label="Searh" 
+                variant="label-hidden" 
+                placeholder="Enter search term" 
+                aura:id="SearchBox"
+            />
+        </span>
+    	<br/>
+
+        <lightning:datatable
+            columns="{!v.columns}"
+            data="{!v.filteredData}"
+            keyField="id"
+        />
+    
+</aura:component>
