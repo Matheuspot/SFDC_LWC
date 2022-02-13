@@ -1,9 +1,13 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="LightningSearchDataTableController">
+<aura:component implements = "flexipage:availableForAllPageTypes" access="global" controller="LightningSearchDataTableController">
     
     <!-- attributes -->
     <aura:attribute name="data" type="Map"/>
     <aura:attribute name="filteredData" type="Map"/>
+    <aura:attribute name="accountIndustry" type="String"/>
+    <aura:attribute name="accountName" type="String"/>
     <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="searchedFields" type="Object"/>
+    <aura:attribute name="testArray" type="List"/>
 
     <!-- handlers-->
     <aura:handler name="init" value="{!this }" action="{!c.init }"/>
@@ -12,10 +16,20 @@
         	<lightning:input 
                 onchange="{!c.searchTable}" 
                 type="search" 
-                label="Searh" 
-                variant="label-hidden" 
-                placeholder="Enter search term" 
-                aura:id="SearchBox"
+                label="Industry" 
+                name = "accountIndustry"
+                variant="label-hidden"               
+                placeholder="Enter the account's industry" 
+                aura:id="firstNameField"
+            />
+        	<lightning:input 
+                onchange="{!c.searchTable}" 
+                type="search" 
+                label="Account Name" 
+                name = "accountName"
+                variant="label-hidden"              
+                placeholder="Enter the account name" 
+                aura:id="secondNameField"
             />
         </span>
     	<br/>
