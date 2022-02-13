@@ -21,43 +21,44 @@
         let filteredValues = []
        
         let fieldName  = event.getSource().get("v.name")
-        let fieldValue = event.getSource().get("v.value")
-  
-        if (fieldName == 'accountName') cmp.set("v.accountName", fieldValue)        
+        let fieldValue = event.getSource().get("v.value")     
+        let savedAccountName  = ''
+        if (fieldName == 'accountName') {
+            savedAccountName = fieldValue
+        }      
         if (fieldName == 'accountIndustry') cmp.set('v.accountIndustry', fieldValue)
 
-        let savedAccountName = cmp.get('v.accountName')
-        let savedAccountIndustry = cmp.get('v.accountIndustry')  
+       
+        let savedAccountIndustry = cmp.get('v.accountIndustry') == undefined ? '' :  cmp.get('v.accountIndustry')
+    
+        var tempArray = []
+        for(let i = 0; i < fetchedData.length; i++){
+            if(
+                (fetchedData[i].name && fetchedData[i].name.toUpperCase().indexOf(savedAccountName.toUpperCase()) != -1) && 
+                (fetchedData[i].industry && fetchedData[i].industry.toUpperCase().indexOf(savedAccountIndustry.toUpperCase()) != -1) 
+            ){
+               
+                tempArray.push(fetchedData[i]);
+                
+            }
+        }
 
-        console.log(savedAccountName)
-        console.log(savedAccountIndustry)
-        
-        let searchedFields = {}
-     
-        searchedFields = JSON.parse(
-            `{
-                "name" : "${savedAccountName}", 
-                "industry" : "${savedAccountIndustry}"
-            }`
-        )
-                   
+        if (savedAccountName == '' &&  savedAccountIndustry == '') {
+            tempArray = []
+        }
 
-        console.log('searched fields: ' + JSON.stringify(searchedFields))    
-        console.log('fetchedData: ' + JSON.stringify(fetchedData))
+        console.log('saved acc: '  + savedAccountName)
+        console.log('saved industry: ' + savedAccountIndustry)
+        console.log('ARRAY: ' + JSON.stringify(tempArray))
 
-        fetchedData.filter(item => {           
-            for (let key in searchedFields) {             
-                if (item[key] === undefined || item[key].toUpperCase() != searchedFields[key].toUpperCase()) {
-                    console.log('passed here 1')
-                    return false
-                }
-            }   
-            console.log('passed here 2')
-            filteredValues.push(item)  
-        });
+        if (tempArray.length > 0 ) {
+            cmp.set('v.filteredData', tempArray)
+        } else {
+            cmp.set('v.filteredData', fetchedData) 
+        }
 
-        console.log('filtered value array: ' + filteredValues)
-        if (filteredValues.length > 0) cmp.set('v.filteredData', filteredValues)
-        if (filteredValues.length < 1) cmp.set('v.filteredData', fetchedData)          
+
+
+           
     }  
 })
