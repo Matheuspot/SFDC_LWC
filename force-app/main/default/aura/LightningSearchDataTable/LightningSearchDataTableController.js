@@ -18,56 +18,34 @@
         $A.enqueueAction(action);
     },
 
-    searchTable : function(cmp,event,helper) {  
+    searchTable : function(cmp, event) {  
         
         let fetchedData = cmp.get("v.data");
         let filteredValues = []
+        let searchedFields = {}       
        
         let fieldName  = event.getSource().get("v.name")
-        let fieldValue = event.getSource().get("v.value")
-  
-        if (fieldName == 'accountName') cmp.set("v.accountName", fieldValue)        
-        if (fieldName == 'accountIndustry') cmp.set('v.accountIndustry', fieldValue)
+        let fieldValue = event.getSource().get("v.value")           
+      
+        searchedFields = cmp.get('v.searchedFields') === null ? {} : cmp.get('v.searchedFields')  
 
-        let savedAccountName = cmp.get('v.accountName')
-        let savedAccountIndustry = cmp.get('v.accountIndustry')  
-
-        console.log(savedAccountName)
-        console.log(savedAccountIndustry)
-        
-        let searchedFields = {}
-     
-        searchedFields = JSON.parse(`   
-                                    {
-                                        "name" : "${savedAccountName}", 
-                                        "industry" : "${savedAccountIndustry}"
-                                    }`
-                                )
-
+        searchedFields[fieldName] = fieldValue             
+        cmp.set('v.searchedFields', searchedFields)
+       
         Object.keys(searchedFields).forEach(key => {
             if (searchedFields[key] === "undefined" || searchedFields[key] === "") {
                 delete searchedFields[key];
             }
-        });
+        });   
 
         fetchedData.filter(item => {           
             for (let key in searchedFields) {             
-                if (!item[key].toUpperCase().includes(searchedFields[key].toUpperCase())) {                    
-                    return false
-                }
+                if (!item[key].toUpperCase().includes(searchedFields[key].toUpperCase())) { return false }
             }              
             filteredValues.push(item)  
-        });
-      
+        });   
+              
         if (filteredValues.length > 0) cmp.set('v.filteredData', filteredValues)
-        if (filteredValues.length == 0) cmp.set('v.filteredData', [])       
-        
-        console.log('filtered object: ' + JSON.stringify(filteredValues))
-        console.log('filtered size: ' + filteredValues.length)
-    }, 
-
-    handleResize : function(cmp,event,helper) {  
-        const sizes = event.detail.columnWidths
-        console.log('sizes: ' + sizes)
-    }
+        if (filteredValues.length == 0) cmp.set('v.filteredData', [])      
+    },     
 })

@@ -7,7 +7,6 @@
     <aura:attribute name="accountName" type="String"/>
     <aura:attribute name="columns" type="List"/>
     <aura:attribute name="searchedFields" type="Object"/>
-    <aura:attribute name="testArray" type="List"/>
 
     <!-- handlers-->
     <aura:handler name="init" value="{!this }" action="{!c.init }"/>
@@ -17,7 +16,7 @@
                 onchange="{!c.searchTable}" 
                 type="search" 
                 label="Industry" 
-                name = "accountIndustry"
+                name = "industry"
                 variant="label-hidden"               
                 placeholder="Enter the account's industry" 
                 aura:id="firstNameField"
@@ -26,7 +25,7 @@
                 onchange="{!c.searchTable}" 
                 type="search" 
                 label="Account Name" 
-                name = "accountName"
+                name = "name"
                 variant="label-hidden"              
                 placeholder="Enter the account name" 
                 aura:id="secondNameField"
@@ -37,7 +36,6 @@
         <lightning:datatable
             columns="{!v.columns}"
             data="{!v.filteredData}"
-            onresize="{handleResize}"
             keyField="id"            
         />
     
