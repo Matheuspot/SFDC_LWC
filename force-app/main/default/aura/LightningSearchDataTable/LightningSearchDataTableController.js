@@ -60,6 +60,14 @@
         });
       
         if (filteredValues.length > 0) cmp.set('v.filteredData', filteredValues)
-        if (filteredValues.length < 1) cmp.set('v.filteredData', fetchedData)          
-    }  
+        if (filteredValues.length == 0) cmp.set('v.filteredData', [])       
+        
+        console.log('filtered object: ' + JSON.stringify(filteredValues))
+        console.log('filtered size: ' + filteredValues.length)
+    }, 
+
+    handleResize : function(cmp,event,helper) {  
+        const sizes = event.detail.columnWidths
+        console.log('sizes: ' + sizes)
+    }
 })

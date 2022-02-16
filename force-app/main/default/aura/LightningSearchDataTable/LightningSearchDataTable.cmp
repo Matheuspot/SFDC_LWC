@@ -37,7 +37,8 @@
         <lightning:datatable
             columns="{!v.columns}"
             data="{!v.filteredData}"
-            keyField="id"
+            onresize="{handleResize}"
+            keyField="id"            
         />
     
 </aura:component>
