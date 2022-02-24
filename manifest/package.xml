@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">	
 	<types>
 		<members>AccountController</members>
 		<members>AccountHandler</members>
@@ -70,6 +70,7 @@
 		<members>displayContacts</members>
 		<members>dynamicCSS</members>
 		<members>editContactRecord</members>
+		<members>filePreviewAndDownloads</members>
 		<members>getListUiDemoLwc</members>
 		<members>getObjectInfoDemo</members>
 		<members>getPicklistValuesByRecordTypeDemo</members>
@@ -105,11 +106,13 @@
 		<members>similarCars</members>
 		<members>slotChildDemo</members>
 		<members>slotParentDemo</members>
+		<members>staticImages</members>
 		<members>stylingOne</members>
 		<members>stylingTwo</members>
 		<members>updateRecordDemo</members>
 		<members>wireApexWithParams</members>
 		<members>wireDemoUserDetail</members>
+		<members>formFactorDemo</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>53.0</version>
