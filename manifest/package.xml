@@ -13,6 +13,10 @@
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<types>
+		<members>*</members>
+		<name>LightningMessageChannel</name>
+	</types>
+	<types>
 		<members>CAR_HUB</members>
 		<members>Zero_to_Hero_in_LWC</members>
 		<name>CustomApplication</name>
