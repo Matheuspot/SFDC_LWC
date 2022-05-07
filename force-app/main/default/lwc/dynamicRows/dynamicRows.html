@@ -22,6 +22,9 @@
             <th class="" scope="col">
               <div class="slds-truncate" title="Industry">Industry</div>
             </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="Phone">Phone Options</div>
+            </th>
             <th class="" scope="col" style="width: 3rem"> </th>
           </tr>
         </thead>
@@ -37,7 +40,10 @@
             </td>            
             <td data-label="Account Industry">
               <lightning-input name = 'Industry' data-index = {row.Id} onchange = {buildObject} value = {row.Industry} type="text"></lightning-input>
-            </td>      
+            </td>   
+            <td>
+              <lightning-combobox name="Phones" data-index = {row.Id} options = {row.Phones}></lightning-combobox>
+            </td>   
             <td>
               <lightning-button-icon icon-name="utility:delete" data-index = {row.Id} alternative-text = "Remove" title = "Remove" onclick={deleteRow}></lightning-button-icon>
             </td>      
