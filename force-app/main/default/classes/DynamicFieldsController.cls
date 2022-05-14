@@ -15,7 +15,16 @@ public with sharing class DynamicFieldsController {
     public static List<Account> getAccountPhoneByName(String accountName){
         try {
             string name = '%' + accountName + '%';
-            return [SELECT Id, Phone FROM Account WHERE Name LIKE : name LIMIT 2];            
+            return [SELECT Id, Phone FROM Account WHERE Name LIKE : name LIMIT 1];            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static RegisteredPrice__c getRegisteredPricesForIBM(List<String> ibmCodes){
+        try {
+            return [SELECT IBM__c, Base__c, Product__c,Price__c FROM RegisteredPrice__c WHERE IBM__c IN : ibmCodes];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
