@@ -13,6 +13,13 @@
     <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-label="Example default base table of Opportunities">
         <thead>             
           <tr class="slds-line-height_reset">
+            <th class="" scope="col">              
+                <lightning-input 
+                    type = "checkbox" 
+                    onchange= {selectAllCheckboxes}>
+                </lightning-input> 
+              <div class="slds-truncate" title="Checkbox"></div>
+            </th>
             <th class="" scope="col">
               <div class="slds-truncate" title="Line Number">NO</div>
             </th>
@@ -32,17 +39,24 @@
         <tbody>
         <template for:each = {rows} for:item = "row">            
           <tr key = {row} class ="slds-hint-parent"> 
+            <td>
+              <lightning-input 
+                  type = "checkbox"                                
+                  data-index = {row.Id}
+                  onchange= {selectCheckbox}>
+              </lightning-input>                        
+          </td>
             <td data-label="Line Number">
               <div class="slds-truncate" title="Cloudhub">{row.Id}</div>
             </td>
             <td data-label="Account Name">
-              <lightning-input name = 'Name' data-index = {row.Id} onkeyup = {searchForAccountIndustry} onchange = {buildObject} value = {row.Name} type="text"></lightning-input>
+              <lightning-input name = 'Name' required data-index = {row.Id} onkeyup = {searchForAccountIndustry} onchange = {buildObject} value = {row.Name} type="text"></lightning-input>
             </td>            
             <td data-label="Account Industry">
-              <lightning-input name = 'Industry' data-index = {row.Id} onchange = {buildObject} value = {row.Industry} type="text"></lightning-input>
+              <lightning-input name = 'Industry' required data-index = {row.Id} onchange = {buildObject} value = {row.Industry} type="text"></lightning-input>
             </td>   
             <td>
-              <lightning-combobox name="Phones" data-index = {row.Id} options = {row.Phones}></lightning-combobox>
+              <lightning-combobox name="Phone" required data-index = {row.Id} onchange = {buildObject} options = {row.Phones} ></lightning-combobox>
             </td>   
             <td>
               <lightning-button-icon icon-name="utility:delete" data-index = {row.Id} alternative-text = "Remove" title = "Remove" onclick={deleteRow}></lightning-button-icon>
@@ -54,9 +68,9 @@
     <!-- Footer -->
     <footer class="slds-modal__footer" style="padding: 0.50rem 1rem;">      
       <div class = "slds-align_absolute-center slds-p-bottom_x-small slds-p-horizontal_medium">
-        <input name = 'rowsQuantity' onchange = {setNumberOfRows}  type="number"/> 
+        <input name = 'rowsQuantity' value = {initialNumberOfRows} onchange = {setNumberOfRows}  type="number"/> 
       </div>          
-      <lightning-button class = "slds-p-right_small" variant = "neutral" label = "Add row" title = "add row(s)" icon-name = "utility:add" onclick = {addRow}></lightning-button>      
+      <lightning-button class = "slds-p-right_small" disabled = {isQuantityOfRowsNotDefined} variant = "neutral" label = "Add row" title = "add row(s)" icon-name = "utility:add" onclick = {addRow}></lightning-button>      
       <lightning-button class = "slds-p-right_small" icon-name="utility:save" variant = "brand" label =" Create records" title = "Create Accounts" onclick = {createAccounts}></lightning-button>      
     </footer>
 </template>
