@@ -22,7 +22,7 @@ public with sharing class DynamicFieldsController {
     }
 
     @AuraEnabled
-    public static RegisteredPrice__c getRegisteredPricesForIBM(List<String> ibmCodes){
+    public static List<RegisteredPrice__c> getRegisteredPricesForIBM(List<String> ibmCodes){
         try {
             return [SELECT IBM__c, Base__c, Product__c,Price__c FROM RegisteredPrice__c WHERE IBM__c IN : ibmCodes];
         } catch (Exception e) {

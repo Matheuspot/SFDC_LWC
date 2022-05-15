@@ -5,9 +5,13 @@
 		<name>ApexClass</name>
 	</types>
 	<types>
-		<members>customLookup</members>
+		<members>carCard</members>
+		<members>carFilter</members>
+		<members>carTile</members>
+		<members>carTileList</members>
+		<!--<members>customLookup</members>
 		<members>customLookupDemo</members>
-		<members>multipleAccountInsertion</members>
+		<members>multipleAccountInsertion</members>-->
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>53.0</version>
