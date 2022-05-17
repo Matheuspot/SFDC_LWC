@@ -1,10 +1,9 @@
 import { LightningElement, track } from 'lwc';
 import getRegisteredPricesForIBM from '@salesforce/apex/FlexController.getRegisteredPricesForIBM'
 
-const OBJECT_ROW = {'Id' : '', 'ibmCode' : '', 'basesCode' : [], 'baseCode' : '', 'productCodes' : [], 'productCode' : '', 'productPrices' : [], 'productPrice' : ''}
+const OBJECT_ROW = {'Id' : '', 'ibmCode' : '', 'basesCode' : [], 'baseCode' : '', 'productCodes' : [], 'productCode' : '', 'productPrices' : [], 'productPrice' : 0.0}
 
 export default class FlexMainComponent extends LightningElement {
-
 
 numberOfRows = 1
 currentIndex
@@ -15,19 +14,17 @@ objectRow = OBJECT_ROW
 @track rows = []
 @track ibmBases = []
 
-
     connectedCallback() {
         this.buildNewRow()
     }
     
-    searchForIBMs(event) {
-       
-        let index = event.target.dataset.index
-        let fieldName = event.target.name
-        let fieldValue = event.target.value        
+    searchForIBMs(event) {     
 
-        this.currentIndex = index      
-        this.getRegisteredPricesForIBM()    
+        let fieldName = event.target.name
+        this.currentIndex = event.target.dataset.index   
+
+        this.buildObjectOnChange(event)        
+        this.getRegisteredPricesForIBM(fieldName)    
     }
 
     addRow() {
@@ -58,10 +55,10 @@ objectRow = OBJECT_ROW
         let newRow = {...this.objectRow}
 
         newRow.Id = index,
-        newRow.IBM = '',
-        newRow.Base = '',
-        newRow.Product = '',
-        newRow.Price = ''
+        newRow.ibmCode = '',
+        newRow.baseCode = '',
+        newRow.productCode = '',
+        newRow.productPrice = ''
 
         this.rows.push(newRow)          
     }
@@ -86,8 +83,16 @@ objectRow = OBJECT_ROW
             if (this.rows[i].Id === parseInt(currentIndex)) {
                 this.rows[i][fieldName] = fieldValue
             }
-        }       
-        console.log('JSON: ', JSON.stringify(this.rows)) 
+        }        
+    }
+
+    buildObjectByController(data, type) {  
+       
+        for (let i = 0; i < this.rows.length; i++){
+            if (this.rows[i].Id === parseInt(this.currentIndex)) {
+                this.rows[i][type] = data
+            }
+        }           
     }
 
     setNumberOfRows(event) {
@@ -95,43 +100,47 @@ objectRow = OBJECT_ROW
         this.initialNumberOfRows = this.numberOfRows
     }
 
-    getRegisteredPricesForIBM() {      
-        getRegisteredPricesForIBM({ibmCodes : this.rows})
+    getRegisteredPricesForIBM(fieldName) {     
+        getRegisteredPricesForIBM({filters : this.getCurrentRow()})
         .then(data =>{  
-            this.mainData = data     
-            console.log('MAIN DATA: ', this.mainData)                          
+            this.mainData = data   
+            console.log('main data: ', JSON.stringify(this.mainData))
+            this.getListOfBasesForIBM(fieldName)                                  
         }).catch(error => {
             console.error(error)
         })       
     }
 
-    getListOfBasesForIBM(ibmCode) {  
-       
-        let ibmBase = {'IBM' : '', 'Base' : ''}           
-        //let basesByIBM = [ {value : 'BIP-SP', label : 'BIP-SP'}, {value : 'BIP-RJ', label : 'BIP-RJ'}]
+    getListOfBasesForIBM(fieldName) {    
+        
+        if (fieldName === 'ibmCode') {
+            let ibmBase = this.mainData.map(item => {return { value : item.Base__c, label: item.Base__c }}) 
+            this.buildObjectByController(ibmBase, 'basesCode')  
+        }  
 
-     
-
-   
-      /*  for (let i = 0; i < this.mainData.length; i++) {
-            if (item.IBM__c === ibmCode) {
-                ibmBase['IBM'] = item.IBM__c
-                ibmBase['Base'] = item.Base__c                             
-            }    
-        }    
-      */
-        this.buildObjectByController(basesByIBM)         
+        if (fieldName === 'baseCode') {
+            let ibmBase = this.mainData.map(item => {return { value : item.Product__c, label: item.Product__c }}) 
+            this.buildObjectByController(ibmBase, 'productCodes')  
+        }  
+        if (fieldName === 'productCode') {
+            let ibmBase = this.mainData.map(item => {return { value : item.Price__c, label: item.Price__c }}) 
+            this.buildObjectByController(ibmBase, 'productPrice')  
+        }               
     }
 
-    buildObjectByController(data) {  
-       
+    getCurrentRow() {
+        let currentRow = []
+
         for (let i = 0; i < this.rows.length; i++){
-                if (this.rows[i].Id === parseInt(this.currentIndex)) {
-                    this.rows[i]['Bases'] = data
-                }
-        }     
-    }
+            if (this.rows[i].Id === parseInt(this.currentIndex)) {
+                currentRow = this.rows[i]
+            }
+        }
 
+        console.log('current ', JSON.stringify(currentRow))
+
+        return currentRow
+    }
     
     getCurrentIndex() {
         let index = 0

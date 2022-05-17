@@ -53,16 +53,16 @@
                 <div class="slds-truncate" title="Cloudhub">{row.Id}</div>
               </td>
               <td data-label="IBM">
-                <lightning-input name = 'ibmCode' required data-index = {row.Id} onkeyup = {searchForIBMs} onchange = {buildObjectOnChange} value = {row.IBM} type="text"></lightning-input>
+                <lightning-input name = 'ibmCode' required data-index = {row.Id} onkeyup = {searchForIBMs} onchange = {buildObjectOnChange} value = {row.ibmCode} type="text"></lightning-input>
               </td>            
               <td data-label="Base">
-                <lightning-combobox name = 'baseCode' required data-index = {row.Id} onchange = {buildObjectOnChange} options = {row.Bases}></lightning-combobox>
+                <lightning-combobox name = 'baseCode' required data-index = {row.Id} onchange = {searchForIBMs} options = {row.basesCode}></lightning-combobox>
               </td>   
               <td>
-                <lightning-combobox name="productCode" required data-index = {row.Id} onchange = {buildObjectOnChange} options = {row.Products} ></lightning-combobox>
+                <lightning-combobox name="productCode" required data-index = {row.Id} onchange = {searchForIBMs} options = {row.productCodes} ></lightning-combobox>
               </td>   
               <td>
-                <lightning-input name="productPrice" required data-index = {row.Id} onchange = {buildObjectOnChange} value = {row.Price} ></lightning-input>
+                <lightning-input name="productPrice" required data-index = {row.Id} onchange = {buildObjectOnChange} value = {row.productPrice} ></lightning-input>
               </td>   
               <td>
                 <lightning-button-icon icon-name="utility:delete" data-index = {row.Id} alternative-text = "Remove" title = "Remove" onclick={deleteRow}></lightning-button-icon>

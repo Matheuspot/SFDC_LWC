@@ -13,7 +13,7 @@ public with sharing class FlexController {
     @AuraEnabled
     public static List<RegisteredPrice__c> getRegisteredPricesForIBM(Filter filters){
         
-        String key, whereClause,  ibmCode, baseCode, productCode, productPrice = '';
+        String key, whereClause, ibmCode, baseCode, productCode, productPrice = '';
 
         String [] baseCodes;
         String [] productPrices;
@@ -30,7 +30,6 @@ public with sharing class FlexController {
 
                 baseCodes = filters.baseCodes;
                 productPrices = filters.productPrices;
-
 
                 if (!String.isEmpty(ibmCode)) {
                     criteria.add(' IBM__c =: ibmCode');
