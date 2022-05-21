@@ -1,17 +1,35 @@
 public with sharing class FlexController {
  
-    public class Filter {      
+    public class Flex {      
         @AuraEnabled public String ibmCode {get; set;}
         @AuraEnabled public String baseCode {get; set;}
         @AuraEnabled public String productCode {get; set;}
         @AuraEnabled public String productPrice {get; set;}
-
         @AuraEnabled public String[] baseCodes {get; set;}
         @AuraEnabled public String[] productPrices {get; set;}
     }
 
     @AuraEnabled
-    public static List<RegisteredPrice__c> getRegisteredPricesForIBM(Filter filters){
+    public static void saveFlex(List<Flex> flexRows){
+        try {
+            if (flexRows.isEmpty()) return;
+            List<Flex__c> flexes = new List<Flex__c>();
+         
+            for (Flex flexRow : flexRows) {     
+                System.debug('Flex row: ' + flexRow);           
+                Flex__c flex = FlexService.setFlexDetails(flexRow);        
+                flexes.add(flex);
+            } 
+
+            insert flexes;
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static List<RegisteredPrice__c> getRegisteredPricesForIBM(Flex filters){
         
         String key, whereClause, ibmCode, baseCode, productCode, productPrice = '';
 
@@ -23,11 +41,11 @@ public with sharing class FlexController {
         try {            
 
             if (filters != null) {
+
                 ibmCode = filters.ibmCode;
                 baseCode = filters.baseCode;
                 productCode = filters.productCode;
                 productPrice = filters.productPrice;
-
                 baseCodes = filters.baseCodes;
                 productPrices = filters.productPrices;
 

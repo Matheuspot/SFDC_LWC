@@ -1,5 +1,6 @@
 import { LightningElement, track } from 'lwc';
 import getRegisteredPricesForIBM from '@salesforce/apex/FlexController.getRegisteredPricesForIBM'
+import saveFlex from '@salesforce/apex/FlexController.saveFlex';
 
 const OBJECT_ROW = {'Id' : '', 'ibmCode' : '', 'basesCode' : [], 'baseCode' : '', 'productCodes' : [], 'productCode' : '', 'productPrices' : [], 'productPrice' : 0.0}
 
@@ -61,6 +62,14 @@ objectRow = OBJECT_ROW
         newRow.productPrice = ''
 
         this.rows.push(newRow)          
+    }
+
+    saveFlex() {
+        saveFlex({flexRows : this.rows}).then(data =>{
+            console.log('success')
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     selectCheckbox(event) {
