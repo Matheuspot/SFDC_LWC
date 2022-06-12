@@ -1,0 +1,23 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_none slds-m-top_xxx-small slds-m-horizontal_none">
+            <lightning-layout class = "slds-wrap">
+                <lightning-layout-item>
+                    <div class="custom-box slds-p-left_large">                        
+                        <c-custom-lookup lookup-label ="Grupo de clientes" object-api-name="account" icon-name="standard:account"  
+                          onrecordselection={onAccountSelection}>
+                        </c-custom-lookup>                            
+                    </div>
+                </lightning-layout-item>      
+            </lightning-layout>
+
+            <lightning-layout-item>
+                <lightning-layout-item padding="around-small">
+                    <div class="custom-box slds-p-around_medium slds-text-align_left">
+                        <c-multi-select-lookup lookup-label = "Cliente(s)" sobject-name = "Account" icon-name="standard:account"> </c-multi-select-lookup>  
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout-item>
+        </div>
+    </lightning-card>    
+</template>

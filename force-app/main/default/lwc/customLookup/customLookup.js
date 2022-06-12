@@ -20,6 +20,7 @@ import { LightningElement, track, wire, api } from "lwc";
   onRecordSelection(event) {  
    this.selectedRecordId = event.target.dataset.key;  
    this.selectedValue = event.target.dataset.name;  
+   console.log(this.selectedValue)
    this.searchKey = "";  
    this.onSeletedRecordUpdate();  
   }  

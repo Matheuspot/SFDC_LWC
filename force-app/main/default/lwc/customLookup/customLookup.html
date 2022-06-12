@@ -1,5 +1,5 @@
 <template>  
-    <div class="slds-form-element">  
+    <div>  
       <label class="slds-form-element__label" for="combobox-id-2">{lookupLabel}</label>  
       <div class="slds-form-element__control">  
         <div class="slds-combobox_container">  
@@ -26,7 +26,7 @@
     
             <template if:false={selectedValue}>  
             <div data-key="searchdiv" class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">  
-              <input type="text" onfocusout={onLeave} value={searchKey} onkeyup={handleKeyChange} onchange={handleKeyChange} class="slds-input slds-combobox__input slds-has-focus" id="combobox-id-2" aria-autocomplete="list" aria-controls="listbox-id-2" role="textbox" placeholder="Search..." />  
+              <input type="text" onfocusout={onLeave} value={searchKey} onclick ={handleKeyChange} onkeyup={handleKeyChange} onchange={handleKeyChange} class="slds-input slds-combobox__input slds-has-focus" id="combobox-id-2" aria-autocomplete="list" aria-controls="listbox-id-2"  role="textbox" placeholder="Buscar por grupo" />  
               <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">  
                 <lightning-icon icon-name="utility:search" size="xx-Small" class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true"></lightning-icon>  
               </span>  
@@ -47,8 +47,7 @@
                       </span>  
                     </span>  
                     <span class="slds-media__body">  
-                      <span data-key={record.Id} data-name={record.Name} class="slds-listbox__option-text slds-listbox__option-text_entity">{record.Name} </span>  
-                      <span data-key={record.Id} data-name={record.Industry} class="slds-listbox__option-meta slds-listbox__option-meta_entity"><strong>Industry</strong> {record.Industry}</span>
+                      <span data-key={record.Id} data-name={record.Name} class="slds-listbox__option-text slds-listbox__option-text_entity">{record.Name} </span>                      
                     </span>  
                   </div>  
                 </li>  

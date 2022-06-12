@@ -1,0 +1,38 @@
+<template>
+
+    <!-- #header -->
+    <div class="slds-page-header">
+        <div class="slds-page-header__row slds-wrap">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">                                         
+                        <lightning-icon icon-name="standard:account" alternative-text ="Solicitação" title="Solicitação"></lightning-icon>                       
+                        <span class="slds-assistive-text">account</span>                        
+                    </div>
+                    <div class="slds-media__body">                       
+                        <div class="slds-page-header__name-title">
+                            <h1 class="slds-page-header__title slds-truncate">Seleção de clientes</h1>
+                        </div>                        
+                        <p class="slds-page-header__name-meta">Novo Preço</p>
+                    </div>
+                </div>
+            </div>       
+            <div class = "slds-no-flex slds-wrap">                
+                <lightning-button disabled variant="success" label="Calcular" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>           
+            
+                <lightning-button disabled variant="success" label="Deletar"  title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+            
+            
+                <lightning-button disabled variant="brand" label="Enviar para aprovação" title="Successful action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+            </div>            
+        </div>                    
+    </div>   
+
+    <!-- #menu -->
+   <c-flex-menu></c-flex-menu>
+    <div class = "slds-p-bottom_xx-small"></div>
+    
+    <!-- #table-->
+    <div class = "slds-p-bottom_xx-small"></div>
+    <c-flex-table></c-flex-table>    
+</template>
