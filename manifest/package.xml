@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-
 	<types>
-
-		<members>lookUpWithMultiSelection</members>
-		<!--<members>customLookup</members>
-		<members>customLookupDemo</members>
-		<members>multipleAccountInsertion</members>-->
+		<members>CustomLookupController</members>
+		<members>NewFlexBuilder</members>
+		<members>NewFlexController</members>
+		<members>NewFlexService</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>customLookup</members>
+		<members>multiSelectLookup</members>
+		<members>flexMain</members>
+		<members>flexMenu</members>
+		<members>flexTable</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>53.0</version>

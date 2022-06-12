@@ -1,12 +1,12 @@
 import { LightningElement,api,track } from 'lwc';
-import getResults from '@salesforce/apex/MultiLookUpController.getResults';
+import getRecords from '@salesforce/apex/CustomLookupController.getOnlyRecordsOwnedByTMs'
 
 const idleClassName = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
 
 export default class LwcMultiLookup extends LightningElement {
 
     // General setup
-    @api sobjectName
+    @api sobjectName = 'Account'
     @api lookupLabel;
     @api required
     @api iconName    
@@ -26,7 +26,7 @@ export default class LwcMultiLookup extends LightningElement {
     @track selectedRecords = []
     @track classeName = idleClassName  
 
-    setSelectedRecord(event) {
+    addSelectedRecord(event) {
 
         this.data = []
 
@@ -88,8 +88,7 @@ export default class LwcMultiLookup extends LightningElement {
         this.styleHandler()      
     }
 
-    styleHandler() {
-                
+    styleHandler() {                
         let closeCombobox = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
         let openCombobox =  closeCombobox + ' slds-is-open'             
         
@@ -98,7 +97,7 @@ export default class LwcMultiLookup extends LightningElement {
 
     getRecords(inputValue, recordIds) {       
 
-        getResults({ ObjectName: this.sobjectName, fieldName: this.fieldName, value: inputValue, selectedRecId : recordIds, useFilterCriteria: this.useFilterCriteria, filterField: this.filterField, filterFieldValue:this.filterFieldValue})
+        getRecords({ sObjectName: 'Account', fieldName: this.fieldName, fieldInput: inputValue, recordIds : recordIds})
         .then(data => {
             this.messageHandler(inputValue, data, '', true)            
             this.data = data;             
@@ -123,10 +122,6 @@ export default class LwcMultiLookup extends LightningElement {
         this.selectedRecords = [...selectRecId];
         this.selectedRecordIds = [...selectedIds1];
         let selRecords = this.selectedRecords;
-
-        let ids = this.selectedRecordIds.toString();
-        if(this.singleSelection && selectRecId.length <=0){
-            this.disableInputField = false;
-        } 
+    
     }
 }
